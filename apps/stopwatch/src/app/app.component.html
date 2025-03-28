@@ -1,2 +1,9 @@
-<sw-nx-welcome></sw-nx-welcome>
 <router-outlet></router-outlet>
+
+<p>Elapsed: {{ timer.elapsed() }}</p>
+<p>Sets: {{ timer.sets() | json }}</p>
+
+<p><a (click)="timer.start()">Start</a></p>
+<p><a (click)="timer.pause()">Pause</a></p>
+<p><a (click)="timer.reset()">Reset</a></p>
+<p><a (click)="timer.addSet()">Set</a></p>
