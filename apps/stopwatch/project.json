@@ -19,7 +19,8 @@
         "assets": [
           {
             "glob": "**/*",
-            "input": "apps/stopwatch/public"
+            "input": "apps/stopwatch/public/favicon/",
+            "output": "/"
           }
         ],
         "styles": [

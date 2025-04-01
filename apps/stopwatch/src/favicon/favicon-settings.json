@@ -1,0 +1,32 @@
+{
+  "icon": {
+    "desktop": {
+      "regularIconTransformation": {
+        "type": "none"
+      },
+      "darkIconType": "none"
+    },
+    "touch": {
+      "transformation": {
+        "type": "background",
+        "backgroundColor": "#fafafa",
+        "backgroundRadius": 0,
+        "imageScale": 0.8
+      },
+      "appTitle": "RepTrack"
+    },
+    "webAppManifest": {
+      "transformation": {
+        "type": "background",
+        "backgroundColor": "#fafafa",
+        "backgroundRadius": 0,
+        "imageScale": 0.8
+      },
+      "backgroundColor": "#fafafa",
+      "name": "RepTrack",
+      "shortName": "RepTrack",
+      "themeColor": "#1976d2"
+    }
+  },
+  "path": "/"
+}
