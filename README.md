@@ -21,3 +21,6 @@ Generated PWA with
 yarn add @angular/pwa --dev
 nx g @angular/pwa:ng-add --project stopwatch
 ```
+
+nx g @nx/angular:service timer --project stopwatch  
+nx g @nx/angular:component apps/stopwatch/src/app/components/donut

@@ -12,6 +12,7 @@ import { StorageData } from './storage-data.model';
 })
 export class TimerService {
   #interval?: ReturnType<typeof setInterval>;
+  #isActive = signal(false);
 
   #start = signal(0);
   #current = signal(0);
@@ -41,7 +42,7 @@ export class TimerService {
 
     effect(() => {
       const data: StorageData = {
-        active: !!this.#interval,
+        active: this.#isActive(),
         start: this.#start(),
         current: this.#current(),
         sets: this.#sets(),
@@ -49,33 +50,45 @@ export class TimerService {
 
       localStorage.setItem(storageKey, JSON.stringify(data));
     });
+
+    effect(() => {
+      if (this.#isActive()) {
+        if (!this.#interval) {
+          this.#interval = setInterval(
+            () => this.#current.set(Date.now()),
+            1000
+          );
+        }
+      } else {
+        clearInterval(this.#interval);
+        this.#interval = undefined;
+      }
+    });
   }
 
   start(): void {
-    if (!this.#interval) {
+    if (!this.#isActive()) {
       this.#start.update((value) =>
         value <= 0 ? Date.now() : value + Date.now() - this.#current()
       );
       this.#current.set(Date.now());
-      this.#interval = setInterval(() => this.#current.set(Date.now()), 1000);
+      this.#isActive.set(true);
     }
   }
 
   pause(): void {
-    clearInterval(this.#interval);
-    this.#interval = undefined;
+    this.#isActive.set(false);
   }
 
   reset(clearSets = true): void {
-    clearInterval(this.#interval);
-    this.#interval = undefined;
+    this.#isActive.set(false);
     this.#start.set(0);
     this.#current.set(0);
     if (clearSets) this.#sets.set([]);
   }
 
   addSet(): void {
-    if (this.#interval) {
+    if (this.#isActive()) {
       this.#sets.update((value) => [...value, this.elapsed()]);
       this.reset(false);
       this.start();
@@ -83,7 +96,7 @@ export class TimerService {
   }
 
   get isActive() {
-    return !!this.#interval;
+    return this.#isActive.asReadonly();
   }
 
   get sets() {

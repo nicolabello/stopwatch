@@ -1,9 +1,39 @@
 <router-outlet></router-outlet>
-
-<p>Elapsed: {{ timer.elapsed() }}</p>
-<p>Sets: {{ timer.sets() | json }}</p>
-
-<p><a (click)="timer.start()">Start</a></p>
-<p><a (click)="timer.pause()">Pause</a></p>
-<p><a (click)="timer.reset()">Reset</a></p>
-<p><a (click)="timer.addSet()">Set</a></p>
+@if (timer.isActive()) {
+<article>
+  <header>
+    <sw-donut [total]="90" [elapsed]="timer.elapsed()"></sw-donut>
+  </header>
+  <main>
+    <ul>
+      @for (item of timer.sets(); track idx; let idx = $index) {
+      <li>{{ item }}</li>
+      }
+    </ul>
+  </main>
+  <footer>
+    <!--<p><a (click)="timer.pause()">Pause</a></p>-->
+    <button mat-stroked-button (click)="timer.reset()">Stop</button>
+    <button mat-flat-button (click)="timer.addSet()">Next</button>
+  </footer>
+</article>
+} @else {
+<article>
+  <header>
+    <form [formGroup]="configuration">
+      <mat-form-field appearance="outline">
+        <mat-label>Sets (number or list)</mat-label>
+        <input matInput formControlName="sets" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Pause (seconds)</mat-label>
+        <input type="number" matInput formControlName="pause" />
+      </mat-form-field>
+    </form>
+  </header>
+  <main></main>
+  <footer>
+    <button mat-flat-button (click)="timer.start()">Start</button>
+  </footer>
+</article>
+}
