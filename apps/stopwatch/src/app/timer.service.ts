@@ -1,10 +1,5 @@
-import {
-  computed,
-  effect,
-  Injectable,
-  signal,
-  WritableSignal,
-} from '@angular/core';
+import { computed, effect, Injectable, signal, WritableSignal } from '@angular/core';
+
 import { StorageData } from './storage-data.model';
 
 @Injectable({
@@ -17,9 +12,7 @@ export class TimerService {
   #start = signal(0);
   #current = signal(0);
 
-  elapsed = computed(() =>
-    Math.floor((this.#current() - this.#start()) / 1000)
-  );
+  elapsed = computed(() => Math.floor((this.#current() - this.#start()) / 1000));
 
   #sets: WritableSignal<number[]> = signal([]);
 
@@ -54,10 +47,7 @@ export class TimerService {
     effect(() => {
       if (this.#isActive()) {
         if (!this.#interval) {
-          this.#interval = setInterval(
-            () => this.#current.set(Date.now()),
-            1000
-          );
+          this.#interval = setInterval(() => this.#current.set(Date.now()), 1000);
         }
       } else {
         clearInterval(this.#interval);
@@ -68,9 +58,7 @@ export class TimerService {
 
   start(): void {
     if (!this.#isActive()) {
-      this.#start.update((value) =>
-        value <= 0 ? Date.now() : value + Date.now() - this.#current()
-      );
+      this.#start.update((value) => (value <= 0 ? Date.now() : value + Date.now() - this.#current()));
       this.#current.set(Date.now());
       this.#isActive.set(true);
     }

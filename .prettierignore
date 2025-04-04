@@ -1,7 +1,11 @@
 # Add files here to ignore them from prettier formatting
+
 /dist
 /coverage
+/node_modules
+
 .nx
 .angular
 .yarn
 .vscode
+.idea

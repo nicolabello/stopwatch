@@ -1,9 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  input,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 
 @Component({
   imports: [],
@@ -20,10 +15,7 @@ export class DonutComponent {
 
   strokeDasharray = computed(() => {
     const max = 100;
-    const elapsedPercent = Math.min(
-      max,
-      Math.round((this.elapsed() / this.total()) * max * 100) / 100
-    );
+    const elapsedPercent = Math.min(max, Math.round((this.elapsed() / this.total()) * max * 100) / 100);
     return `${elapsedPercent} ${max - elapsedPercent}`;
   });
 
