@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 
+import { formatSeconds } from '../../utils/format-seconds';
+
 @Component({
   imports: [],
   selector: 'sw-donut',
@@ -9,6 +11,7 @@ import { ChangeDetectionStrategy, Component, computed, input } from '@angular/co
 })
 export class DonutComponent {
   total = input.required<number>();
+
   elapsed = input.required<number, number>({
     transform: this.#elapsedTransform,
   });
@@ -19,25 +22,13 @@ export class DonutComponent {
     return `${max - elapsedPercent} ${elapsedPercent}`;
   });
 
-  elapsedTotal = computed(() => this.formatSeconds(this.elapsed()));
+  elapsedTotal = computed(() => formatSeconds(this.elapsed()));
 
-  elapsedDifference = computed(() => this.formatSeconds(this.elapsed() - this.total(), true));
+  elapsedDifference = computed(() => formatSeconds(this.elapsed() - this.total(), true));
 
-  elapsedRemainder = computed(() => this.formatSeconds(Math.max(0, this.total() - this.elapsed())));
+  elapsedRemainder = computed(() => formatSeconds(Math.max(0, this.total() - this.elapsed())));
 
   timeUp = computed(() => this.total() - this.elapsed() < 0);
-
-  formatSeconds(s: number, addSign = false) {
-    const sign = s > 0 ? '+' : s < 0 ? '-' : '';
-
-    s = Math.abs(s);
-
-    const hours = `${Math.floor(s / 3600)}`.padStart(2, '0');
-    const minutes = `${Math.floor((s % 3600) / 60)}`.padStart(2, '0');
-    const seconds = `${s % 60}`.padStart(2, '0');
-
-    return `${addSign ? sign : ''}${hours !== '00' ? `${hours}:` : ''}${minutes}:${seconds}`;
-  }
 
   #elapsedTransform(value: number): number {
     return Math.min(60 * 59 + 59, Math.max(0, value));

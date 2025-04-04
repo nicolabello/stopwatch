@@ -1,0 +1,12 @@
+form {
+  display: flex;
+  gap: 1rem;
+
+  & > *:first-child {
+    flex: 1;
+  }
+
+  & > *:last-child {
+    flex: 0.5;
+  }
+}

@@ -1,22 +1,44 @@
 import { computed, effect, Injectable, signal, WritableSignal } from '@angular/core';
 
-import { StorageData } from './storage-data.model';
+type StorageData = {
+  active: boolean;
+  start: number;
+  current: number;
+  sets: number[];
+};
 
 @Injectable({
   providedIn: 'root',
 })
 export class TimerService {
   #interval?: ReturnType<typeof setInterval>;
-  #isActive = signal(false);
 
-  #start = signal(0);
-  #current = signal(0);
+  readonly #isActive = signal(false);
+  readonly isActive = this.#isActive.asReadonly();
+  readonly #isActiveEffect = effect(() => {
+    if (this.#isActive()) {
+      if (!this.#interval) {
+        this.#interval = setInterval(() => this.#current.set(Date.now()), 1000);
+      }
+    } else {
+      clearInterval(this.#interval);
+      this.#interval = undefined;
+    }
+  });
 
-  elapsed = computed(() => Math.floor((this.#current() - this.#start()) / 1000));
+  readonly #start = signal(0);
+  readonly #current = signal(0);
 
-  #sets: WritableSignal<number[]> = signal([]);
+  readonly elapsed = computed(() => Math.floor((this.#current() - this.#start()) / 1000));
+
+  readonly #sets: WritableSignal<number[]> = signal([]);
+  readonly sets = this.#sets.asReadonly();
 
   constructor() {
+    this.#initStorage();
+  }
+
+  #initStorage() {
     const storageKey = 'timer';
 
     const json = localStorage.getItem(storageKey);
@@ -42,17 +64,6 @@ export class TimerService {
       };
 
       localStorage.setItem(storageKey, JSON.stringify(data));
-    });
-
-    effect(() => {
-      if (this.#isActive()) {
-        if (!this.#interval) {
-          this.#interval = setInterval(() => this.#current.set(Date.now()), 1000);
-        }
-      } else {
-        clearInterval(this.#interval);
-        this.#interval = undefined;
-      }
     });
   }
 
@@ -81,13 +92,5 @@ export class TimerService {
       this.reset(false);
       this.start();
     }
-  }
-
-  get isActive() {
-    return this.#isActive.asReadonly();
-  }
-
-  get sets() {
-    return this.#sets.asReadonly();
   }
 }

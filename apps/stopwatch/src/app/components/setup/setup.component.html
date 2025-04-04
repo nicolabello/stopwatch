@@ -1,0 +1,42 @@
+<header>
+  <form [formGroup]="form">
+    <mat-form-field appearance="outline">
+      <mat-label>Sets (number or list)</mat-label>
+      <input matInput formControlName="sets" [required]="true" />
+      <mat-hint>{{ formattedSets() }}</mat-hint>
+      @if (setsErrors()?.['required']) {
+      <mat-error>This is required</mat-error>
+      } @else if (setsErrors()?.['sets']) {
+      <mat-error>Invalid</mat-error>
+      } @else if (setsErrors()) {
+      <mat-error>{{ setsErrors() | json }}</mat-error>
+      }
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Rest (seconds)</mat-label>
+      <input type="number" matInput formControlName="rest" [required]="true" [min]="0" [max]="59 * 60 + 59" />
+      @if (restErrors()?.['required']) {
+      <mat-error>This is required</mat-error>
+      } @else if (restErrors()?.['min']) {
+      <mat-error>Min value {{ restErrors()?.['min']['min'] }}</mat-error>
+      } @else if (restErrors()?.['max']) {
+      <mat-error>Max value {{ restErrors()?.['max']['max'] }}</mat-error>
+      } @else if (restErrors()) {
+      <mat-error>{{ restErrors() | json }}</mat-error>
+      }
+    </mat-form-field>
+  </form>
+</header>
+<main>
+  <mat-action-list>
+    @for (item of history(); track idx; let idx = $index) {
+    <a mat-list-item>
+      <span>{{ item.sets }}</span>
+      <span>{{ item.rest }}</span>
+    </a>
+    }
+  </mat-action-list>
+</main>
+<footer>
+  <button mat-flat-button (click)="submit()" [disabled]="!formValid()">Start</button>
+</footer>

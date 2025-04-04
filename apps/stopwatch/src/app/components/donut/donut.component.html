@@ -21,9 +21,7 @@
     <text y="60%" transform="translate(0, 2)">
       <tspan x="50%" text-anchor="middle" class="donut-text-sub">
         {{ elapsedTotal() }}
-        @if (timeUp()) {
-          ({{ elapsedDifference() }})
-        }
+        @if (timeUp()) { ({{ elapsedDifference() }}) }
       </tspan>
     </text>
   </g>
