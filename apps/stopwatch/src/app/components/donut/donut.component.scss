@@ -13,22 +13,26 @@
 
 .donut-text {
   font-family: inherit;
-  fill: var(--mat-sys-primary);
+  line-height: 1;
+  text-align: center;
+  text-anchor: middle;
 }
 
-.donut-percent {
+.donut-text-main {
   font-size: 0.5rem;
-  line-height: 1;
   transform: translateY(0.5rem);
+  fill: var(--mat-sys-primary);
   font-weight: bold;
 }
 
-.donut-data {
-  font-size: 0.12rem;
-  line-height: 1;
+.donut-text-super {
+  font-size: 0.15rem;
   transform: translateY(0.5rem);
-  text-align: center;
-  text-anchor: middle;
-  color: var(--mat-sys-secondary);
+  fill: var(--mat-sys-secondary);
+}
+
+.donut-text-sub {
+  font-size: 0.12rem;
+  transform: translateY(0.5rem);
   fill: var(--mat-sys-secondary);
 }

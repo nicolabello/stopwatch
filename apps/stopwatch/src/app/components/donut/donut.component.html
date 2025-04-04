@@ -12,13 +12,19 @@
     stroke-dashoffset="25"
   ></circle>
   <g class="donut-text">
+    <text y="25%" transform="translate(0, 2)">
+      <tspan x="50%" text-anchor="middle" class="donut-text-super">#3 8 reps</tspan>
+    </text>
     <text y="50%" transform="translate(0, 2)">
-      <tspan x="50%" text-anchor="middle" class="donut-percent">
-        {{ time() }}
-      </tspan>
+      <tspan x="50%" text-anchor="middle" class="donut-text-main">{{ elapsedRemainder() }}</tspan>
     </text>
     <text y="60%" transform="translate(0, 2)">
-      <tspan x="50%" text-anchor="middle" class="donut-data">#3 8 reps</tspan>
+      <tspan x="50%" text-anchor="middle" class="donut-text-sub">
+        {{ elapsedTotal() }}
+        @if (timeUp()) {
+          ({{ elapsedDifference() }})
+        }
+      </tspan>
     </text>
   </g>
 </svg>
